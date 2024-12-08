@@ -4,9 +4,11 @@ import lombok.Data;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -30,4 +32,11 @@ public class User {
 
     @Column(nullable = false)
     private int role;
+
+    @Column(nullable = false)
+    private Date created_time;
+
+    @Column(nullable = false)
+    private Date updated_time;
+
 }

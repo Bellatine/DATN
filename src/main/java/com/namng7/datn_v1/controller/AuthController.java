@@ -1,9 +1,10 @@
 package com.namng7.datn_v1.controller;
 
 import com.namng7.datn_v1.model.User;
+import com.namng7.datn_v1.object.ProcessRecord;
 import com.namng7.datn_v1.service.UserService;
 import com.namng7.datn_v1.service.impl.UserServiceImpl;
-import com.namng7.datn_v1.util.CacheManager;
+import com.namng7.datn_v1.cache.CacheManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,14 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         try {
-            userServiceImpl.registerUser(user);
+            ProcessRecord record = new ProcessRecord(user);
+            userServiceImpl.registerUser(record);
             logger.info("Start reload data...");
             try {
 
                 Map<String, User> userMap = userServiceImpl.loadAllUser();
 
-                CacheManager.Users.ALLUSERS = userMap;
+                CacheManager.Users.MapUserByUsername = userMap;
                 logger.info("Reoad data success! " + userMap.size());
             }catch (Exception e){
                 logger.error("Load data fail.", e);
@@ -44,8 +46,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User user) {
         try {
-            User loggedInUser = userServiceImpl.loginUser(user.getUsername(), user.getPassword());
-            return ResponseEntity.ok(loggedInUser);
+            ProcessRecord loginRecord = new ProcessRecord(user);
+            userServiceImpl.loginUser(loginRecord);
+            return ResponseEntity.ok(loginRecord);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

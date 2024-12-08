@@ -1,4 +1,4 @@
-package com.namng7.datn_v1.util;
+package com.namng7.datn_v1.cache;
 
 import com.namng7.datn_v1.model.User;
 import com.namng7.datn_v1.service.UserService;
@@ -9,8 +9,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -32,7 +30,7 @@ public class DataLoader implements ApplicationRunner {
 
             Map<String, User> userMap = userService.loadAllUser();
 
-            CacheManager.Users.ALLUSERS = userMap;
+            CacheManager.Users.MapUserByUsername = userMap;
             if(userMap != null)
                 logger.info("Load data success! " + userMap.size());
         }catch (Exception e){
