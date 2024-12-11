@@ -48,13 +48,13 @@ public class Company {
     private int status;
 
     @Column
-    private int create_by;
+    private Long create_by;
 
     @Column
     private Date created_time;
 
     @Column
-    private int updated_by;
+    private Long updated_by;
 
     @Column
     private Date updated_time;
@@ -63,9 +63,9 @@ public class Company {
     private String updated_reason;
 
     @Column
-    private int bussiness_care;
+    private Long bussiness_care;
 
     @Column(nullable = false)
-    private int user_id;
+    private Long user_id;
 
 }

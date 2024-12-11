@@ -108,20 +108,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, User> loadAllUser() {
-        List<User> listUsers = userRepository.findAll();
-        Map<String, User> mapUsers = new HashMap<>();
-        if(listUsers == null || listUsers.isEmpty()){
-            logger.error("Load user fail! ");
-            return null;
-        }
-        for(User user : listUsers){
-            mapUsers.put(user.getUsername(), user);
-        }
-        return mapUsers;
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
     }

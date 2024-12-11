@@ -14,6 +14,8 @@ public class CacheManager {
 
     public static class Company{
         public static List<Company> ListAllCompany;
+        public static Map<Long, Company> mapCompany;
+
     }
 
     public static class Message{

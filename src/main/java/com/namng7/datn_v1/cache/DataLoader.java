@@ -1,6 +1,8 @@
 package com.namng7.datn_v1.cache;
 
 import com.namng7.datn_v1.model.User;
+import com.namng7.datn_v1.service.CompanyService;
+import com.namng7.datn_v1.service.DataLoaderService;
 import com.namng7.datn_v1.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,11 +18,11 @@ public class DataLoader implements ApplicationRunner {
 
     private static final Logger logger = LogManager.getLogger(DataLoader.class);
 
-    private final UserService userService;
+    private final DataLoaderService dataLoaderService;
 
     @Autowired
-    public DataLoader(UserService userService) {
-        this.userService = userService;
+    public DataLoader(DataLoaderService dataLoaderService) {
+        this.dataLoaderService = dataLoaderService;
     }
 
     @Override
@@ -31,6 +33,7 @@ public class DataLoader implements ApplicationRunner {
             Map<String, User> userMap = userService.loadAllUser();
 
             CacheManager.Users.MapUserByUsername = userMap;
+            CacheManager.Company.mapCompany =
             if(userMap != null)
                 logger.info("Load data success! " + userMap.size());
         }catch (Exception e){
