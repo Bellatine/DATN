@@ -1,5 +1,6 @@
 package com.namng7.datn_v1.cache;
 
+import com.namng7.datn_v1.model.Company;
 import com.namng7.datn_v1.model.User;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class CacheManager {
         public static User AUTH_USER;
     }
 
-    public static class Company{
+    public static class Companys{
         public static List<Company> ListAllCompany;
         public static Map<Long, Company> mapCompany;
 

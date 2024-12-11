@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Map;
 
-public interface UserService extends UserDetailsService {
+public interface UserService{
     ProcessRecord registerUser(ProcessRecord record);
     ProcessRecord loginUser(ProcessRecord record);
     ProcessRecord updateInfor(ProcessRecord record);

@@ -7,5 +7,4 @@ import java.util.Map;
 
 public interface CompanyService {
     ProcessRecord getCompanyByUserId(ProcessRecord record);
-    Map<Long, Company> loadAllCompany();
 }

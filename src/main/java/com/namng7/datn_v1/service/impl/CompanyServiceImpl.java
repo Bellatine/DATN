@@ -24,17 +24,4 @@ public class CompanyServiceImpl implements CompanyService {
         return null;
     }
 
-    @Override
-    public Map<Long, Company> loadAllCompany() {
-        List<Company> listAllCompany = companyRepository.findAll();
-        Map<Long, Company> mapAllCompany = new HashMap<>();
-        if(listAllCompany == null || listAllCompany.size() == 0){
-            logger.warn("Load data fail!");
-            return null;
-        }
-        for(Company company : listAllCompany){
-            mapAllCompany.put(company.getUser_id(), company);
-        }
-        return mapAllCompany;
-    }
 }

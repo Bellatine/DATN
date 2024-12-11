@@ -42,7 +42,7 @@ public class Company {
     private String address;
 
     @Column(nullable = false)
-    private String bankl;
+    private String bank;
 
     @Column
     private int status;

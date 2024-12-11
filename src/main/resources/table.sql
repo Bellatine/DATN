@@ -28,8 +28,41 @@ CREATE TABLE company (
     created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_by INT,
     updated_reason VARCHAR(1000),
-    updated_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Th?i gian c?p nh?t, t? ??ng thay ??i m?i khi có c?p nh?t
+    updated_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Th?i gian c?p nh?t, t? ??ng thay ??i m?i khi cï¿½ c?p nh?t
     bussiness_care INT,
     user_id INT NOT NULL,
 	 UNIQUE (user_id)
 );
+
+CREATE TABLE wallet (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        company_id int,
+                        balance int default 0,
+                        last_topup_id int default -1,
+                        status ENUM('-1', '0', '1') DEFAULT '0',
+                        FOREIGN KEY (company_id) REFERENCES company(id)
+                            ON DELETE CASCADE
+                            ON UPDATE CASCADE
+);
+
+create table transaction_top_up (
+                                    id int auto_increment primary key,
+                                    wallet_id int not null,
+                                    value int not null,
+                                    wallet_balance int,
+                                    status ENUM('-1', '0', '1') DEFAULT '0',
+                                    bussiness_id int not null,
+                                    transaction_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                    INDEX idx_name (bussiness_id),
+                                    foreign key (wallet_id) references wallet(id),
+                                    foreign key (bussiness_id) references user(id)
+);
+
+
+select * from company c ;
+
+ALTER TABLE wallet
+    ADD COLUMN status ENUM('-1', '0', '1') DEFAULT '0';
+
+select * from wallet;
+

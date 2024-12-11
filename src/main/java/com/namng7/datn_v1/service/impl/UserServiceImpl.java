@@ -107,8 +107,4 @@ public class UserServiceImpl implements UserService {
         return updateRecord;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
-    }
 }

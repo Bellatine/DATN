@@ -2,7 +2,9 @@ package com.namng7.datn_v1.controller;
 
 import com.namng7.datn_v1.model.User;
 import com.namng7.datn_v1.object.ProcessRecord;
+import com.namng7.datn_v1.service.DataLoaderService;
 import com.namng7.datn_v1.service.UserService;
+import com.namng7.datn_v1.service.impl.DataLoaderServiceImpl;
 import com.namng7.datn_v1.service.impl.UserServiceImpl;
 import com.namng7.datn_v1.cache.CacheManager;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +22,9 @@ public class AuthController {
     private static final Logger logger = LogManager.getLogger(AuthController.class);
 
     @Autowired
+    private DataLoaderService dataLoaderService = new DataLoaderServiceImpl();
+
+    @Autowired
     private UserService userServiceImpl = new UserServiceImpl();
 
     @PostMapping("/register")
@@ -30,7 +35,7 @@ public class AuthController {
             logger.info("Start reload data...");
             try {
 
-                Map<String, User> userMap = userServiceImpl.loadAllUser();
+                Map<String, User> userMap = dataLoaderService.loadAllUser();
 
                 CacheManager.Users.MapUserByUsername = userMap;
                 logger.info("Reoad data success! " + userMap.size());

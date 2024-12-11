@@ -1,5 +1,6 @@
 package com.namng7.datn_v1.cache;
 
+import com.namng7.datn_v1.model.Company;
 import com.namng7.datn_v1.model.User;
 import com.namng7.datn_v1.service.CompanyService;
 import com.namng7.datn_v1.service.DataLoaderService;
@@ -30,10 +31,11 @@ public class DataLoader implements ApplicationRunner {
         logger.info("Start load data...");
         try {
 
-            Map<String, User> userMap = userService.loadAllUser();
+            Map<String, User> userMap = dataLoaderService.loadAllUser();
+            Map<Long, Company> companyMap = dataLoaderService.loadAllCompany();
 
             CacheManager.Users.MapUserByUsername = userMap;
-            CacheManager.Company.mapCompany =
+            CacheManager.Companys.mapCompany = companyMap;
             if(userMap != null)
                 logger.info("Load data success! " + userMap.size());
         }catch (Exception e){
