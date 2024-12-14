@@ -42,7 +42,7 @@ CREATE TABLE wallet
     company_id    int,
     balance       int default 0,
     last_topup_id int default -1,
-    status        ENUM('-1', '0', '1') DEFAULT '0',
+    status        int DEFAULT 0,
     FOREIGN KEY (company_id) REFERENCES company (id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
@@ -54,7 +54,7 @@ create table transaction_top_up
     wallet_id        int not null,
     value            int not null,
     wallet_balance   int,
-    status           ENUM('-1', '0', '1') DEFAULT '0',
+    status           int       DEFAULT 0,
     bussiness_id     int not null,
     transaction_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX            idx_name (bussiness_id),
@@ -69,16 +69,16 @@ create table webservice_config
     ws_name      varchar(50),
     api_url      varchar(500),
     msg_template varchar(1000),
-    status       ENUM('-1', '0', '1') DEFAULT '0',
+    status       int DEFAULT 0,
     retry_num    int default 0
 );
-create table package
+create table package_config
 (
     id              INT AUTO_INCREMENT PRIMARY KEY,
     package_code    varchar(50)   not null,
     package_name    varchar(50)   not null,
     description     varchar(1000) not null,
-    status          ENUM('-1', '0', '1') DEFAULT '0',
+    status          int       DEFAULT 0,
     add_value       int       default 0,
     ws_id           int           not null,
     valid_time      TIMESTAMP,
@@ -89,7 +89,8 @@ create table package
     updated_reason  varchar(100),
     foreign key (ws_id) references webservice_config (id),
     foreign key (create_user_id) references user (id),
-    foreign key (updated_user_id) references user (id)
+    foreign key (updated_user_id) references user (id),
+    UNIQUE (package_code)
 );
 
 create table gamecode_model
@@ -99,7 +100,7 @@ create table gamecode_model
     model_code      varchar(50) not null,
     discount        int       default 0,
     description     varchar(1000),
-    status          ENUM('-1', '0', '1') DEFAULT '0',
+    status          int       DEFAULT 0,
     start_date      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     valid_date      TIMESTAMP,
     create_date     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -107,6 +108,7 @@ create table gamecode_model
     updated_date    TIMESTAMP,
     updated_user_id int,
     package_id      int         not null,
+    number_required int         not null,
     foreign key (create_user_id) references user (id),
     foreign key (updated_user_id) references user (id),
     foreign key (package_id) references package (id)
@@ -119,8 +121,28 @@ create table transaction_buy_gamecode
     wallet_before      int not null,
     wallet_after       int not null,
     wallet_consumption int not null,
-    trans_time         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    transaction_time   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     total_item         int not null,
     FOREIGN KEY (company_id) REFERENCES company (id)
 );
 
+create table service_config
+(
+    id                INT AUTO_INCREMENT PRIMARY KEY,
+    company_id        int,
+    gamecode_model_id int,
+    create_date       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    start_date        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    valid_date        TIMESTAMP,
+    export_status     int       default 0,
+    FOREIGN KEY (company_id) REFERENCES company (id),
+    FOREIGN KEY (gamecode_model_id) REFERENCES gamecode_model (id)
+);
+
+create table configuration
+(
+    id        INT AUTO_INCREMENT PRIMARY KEY,
+    `key`     varchar(100),
+    content   varchar(1000),
+    module_id ENUM('0', '1', '2') DEFAULT '0'
+);
