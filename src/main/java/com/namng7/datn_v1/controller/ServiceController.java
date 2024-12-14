@@ -2,9 +2,11 @@ package com.namng7.datn_v1.controller;
 
 import com.namng7.datn_v1.model.GamecodeModel;
 import com.namng7.datn_v1.model.PackageConfig;
+import com.namng7.datn_v1.model.ServiceConfig;
 import com.namng7.datn_v1.object.ProcessRecord;
 import com.namng7.datn_v1.service.GamecodeModelService;
 import com.namng7.datn_v1.service.PackageConfigService;
+import com.namng7.datn_v1.service.ServiceConfigService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class ServiceController {
     @Autowired
     private PackageConfigService packageConfigService;
 
+    @Autowired
+    private ServiceConfigService serviceConfigService;
+
     @PostMapping("/addPackage")
     public ResponseEntity<?> addPackageConfig(@RequestBody PackageConfig packageConfig){
         ProcessRecord record = new ProcessRecord();
@@ -43,6 +48,18 @@ public class ServiceController {
         record.setObject(gamecodeModel);
         try{
             gamecodeModelService.addGamecodeModel(record);
+            return ResponseEntity.ok(record);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(record);
+        }
+    }
+
+    @PostMapping("/addServiceConfig")
+    public ResponseEntity<?> addServiceConfig(@RequestBody ServiceConfig serviceConfig){
+        ProcessRecord record = new ProcessRecord();
+        record.setObject(serviceConfig);
+        try{
+            serviceConfigService.addServiceConfig(record);
             return ResponseEntity.ok(record);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(record);
