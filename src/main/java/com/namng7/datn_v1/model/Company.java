@@ -45,7 +45,7 @@ public class Company {
     private String bank;
 
     @Column
-    private int status;
+    private Integer status;
 
     @Column
     private Long create_by;
@@ -62,7 +62,7 @@ public class Company {
     @Column
     private String updated_reason;
 
-    @Column
+    @Column(nullable = false)
     private Long bussiness_care;
 
     @Column(nullable = false)

@@ -30,15 +30,15 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         logger.info("Start load data...");
         try {
-
-            Map<String, User> userMap = dataLoaderService.loadAllUser();
-            Map<Long, Company> companyMap = dataLoaderService.loadAllCompany();
-
-            CacheManager.Users.MapUserByUsername = userMap;
-            CacheManager.Companys.mapCompany = companyMap;
-            if(userMap != null)
-                logger.info("Load data success! " + userMap.size());
-        }catch (Exception e){
+            CacheManager.Users.MapUserByUsername = dataLoaderService.loadAllUser();
+            CacheManager.Users.MapUserByUserID = dataLoaderService.mapUserByUserID();
+            CacheManager.Companys.mapCompany = dataLoaderService.loadAllCompany();
+            CacheManager.MapGamecodeModelByID = dataLoaderService.loadAllGamecodeModel();
+            CacheManager.MapPackageConfigByID = dataLoaderService.loadAllPackageConfig();
+            CacheManager.MapWsConfigByID = dataLoaderService.loadAllWebserviceConfig();
+            CacheManager.MapMessageByMessageCode = dataLoaderService.loadAllConfiguration();
+            logger.info("Load data success! ");
+        } catch (Exception e) {
             logger.error("Load data fail.", e);
         }
 

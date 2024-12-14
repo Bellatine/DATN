@@ -1,42 +1,34 @@
 package com.namng7.datn_v1.model;
 
-import lombok.Data;
-
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "transaction_buy_gamecode")
+public class TransactionBuyGamecode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String username;
+    private int wallet_before;
 
     @Column(nullable = false)
-    private String password;
+    private int wallet_after;
 
     @Column(nullable = false)
-    private String email;
+    private int wallet_consumption;
 
     @Column(nullable = false)
-    private String fullname;
+    private Long company_id;
 
     @Column(nullable = false)
-    private Integer status;
+    private Date transaction_time;
 
     @Column(nullable = false)
-    private Integer role;
-
-    @Column(nullable = false)
-    private Date created_time;
-
-    @Column(nullable = false)
-    private Date updated_time;
-
+    private int total_item;
 }

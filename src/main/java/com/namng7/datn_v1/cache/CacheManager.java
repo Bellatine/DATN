@@ -1,14 +1,19 @@
 package com.namng7.datn_v1.cache;
 
-import com.namng7.datn_v1.model.Company;
-import com.namng7.datn_v1.model.User;
+import com.namng7.datn_v1.model.*;
 
 import java.util.List;
 import java.util.Map;
 
 public class CacheManager {
 
+    public static Map<String, String> MapMessageByMessageCode;
+    public static Map<Long, GamecodeModel> MapGamecodeModelByID;
+    public static Map<Long, PackageConfig> MapPackageConfigByID;
+    public static Map<Long, WebserviceConfig> MapWsConfigByID;
+
     public static class Users{
+        public static Map<Long, User> MapUserByUserID;
         public static Map<String, User> MapUserByUsername;
         public static User AUTH_USER;
     }
@@ -19,7 +24,4 @@ public class CacheManager {
 
     }
 
-    public static class Message{
-        public static Map<String, String> MapMessageByMessageCode;
-    }
 }

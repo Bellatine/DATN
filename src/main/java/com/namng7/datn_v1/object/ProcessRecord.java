@@ -6,6 +6,7 @@ public class ProcessRecord {
     private int errorCode;
     private User user;
     private String message;
+    private Object object;
 
     public ProcessRecord(){
 
@@ -36,5 +37,13 @@ public class ProcessRecord {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
+    public void setObject(Object object) {
+        this.object = object;
     }
 }

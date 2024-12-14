@@ -16,46 +16,66 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/iot/auth")
+@RequestMapping("/api/datn/auth")
 public class AuthController {
 
     private static final Logger logger = LogManager.getLogger(AuthController.class);
 
     @Autowired
-    private DataLoaderService dataLoaderService = new DataLoaderServiceImpl();
-
-    @Autowired
-    private UserService userServiceImpl = new UserServiceImpl();
+    private UserService userServiceImpl;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
+        ProcessRecord record = new ProcessRecord(user);
         try {
-            ProcessRecord record = new ProcessRecord(user);
             userServiceImpl.registerUser(record);
-            logger.info("Start reload data...");
-            try {
-
-                Map<String, User> userMap = dataLoaderService.loadAllUser();
-
-                CacheManager.Users.MapUserByUsername = userMap;
-                logger.info("Reoad data success! " + userMap.size());
-            }catch (Exception e){
-                logger.error("Load data fail.", e);
-            }
-            return ResponseEntity.ok("User registered successfully");
+//            logger.info("Start reload data...");
+//            try {
+//
+//                Map<String, User> userMap = dataLoaderService.loadAllUser();
+//
+//                CacheManager.Users.MapUserByUsername = userMap;
+//                logger.info("Reoad data success! " + userMap.size());
+//            }catch (Exception e){
+//                logger.error("Load data fail.", e);
+//            }
+            return ResponseEntity.ok(record);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(record);
         }
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User user) {
+        ProcessRecord loginRecord = new ProcessRecord(user);
         try {
-            ProcessRecord loginRecord = new ProcessRecord(user);
             userServiceImpl.loginUser(loginRecord);
             return ResponseEntity.ok(loginRecord);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(loginRecord);
+        }
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> updateInfo(@RequestBody User user){
+        ProcessRecord updateRecord = new ProcessRecord(user);
+        try {
+            userServiceImpl.updateInfor(updateRecord);
+            return ResponseEntity.ok(updateRecord);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(updateRecord);
+        }
+    }
+
+
+    @PostMapping("/getUserByUserName")
+    public ResponseEntity<?> getUserByUserName(@RequestBody User user){
+        ProcessRecord record = new ProcessRecord(user);
+        try{
+            userServiceImpl.getUserByUserName(record);
+            return ResponseEntity.ok(record);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(record);
         }
     }
 

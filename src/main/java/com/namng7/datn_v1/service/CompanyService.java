@@ -7,4 +7,5 @@ import java.util.Map;
 
 public interface CompanyService {
     ProcessRecord getCompanyByUserId(ProcessRecord record);
+    void registerCompany(ProcessRecord record);
 }
