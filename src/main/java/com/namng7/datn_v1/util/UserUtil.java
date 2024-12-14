@@ -43,7 +43,8 @@ public class UserUtil {
     public static User saveUser(User user, PasswordEncoder passwordEncoder, UserRepository userRepository) throws Exception{
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
-        CacheManager.Users.MapUserByUsername.put(user.getUsername(), savedUser);
+        CacheManager.Users.MapUserByUsername.put(savedUser.getUsername(), savedUser);
+        CacheManager.Users.MapUserByUserID.put(savedUser.getId(), savedUser);
         return savedUser;
     }
 
