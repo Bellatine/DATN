@@ -16,21 +16,22 @@ public class Key {
     }
 
     public static class ErrorCode {
-        public static final int SYSTEM_FAULT = -1;
         public static final int SUCCESS = 0;
+        public static final int SYSTEM_FAULT = 1;
+        public static final int NOT_CONDITION = 2;
 
         // <editor-fold desc="ErrorCode tac dong user">
-        public static final int INVALID_USER = 1;
-        public static final int INVALID_COMPANY_USER = 2;
-        public static final int NOT_AUTH_CHANGE_INFO = 3;
+        public static final int INVALID_USER = 11;
+        public static final int INVALID_COMPANY_USER = 12;
+        public static final int NOT_AUTH_CHANGE_INFO = 13;
         // </editor-fold>
 
         // <editor-fold desc="ErrorCode tac dong company">
-        public static final int INVALID_COMPANY = 11;
+        public static final int INVALID_COMPANY = 21;
         // </editor-fold>
 
         // <editor-fold desc="ErrorCode tac dong package">
-        public static final int INVALID_PACKAGE = 21;
+        public static final int INVALID_PACKAGE = 31;
         // </editor-fold>
 
         // <editor-fold desc="ErrorCode tac dong company">
@@ -56,6 +57,8 @@ public class Key {
         // <editor-fold desc="Message tac dong company">
         public static final String INVALID_REGISTER_COMPANY = "INVALID_REGISTER_COMPANY";
         public static final String REGISTER_COMPANY_SUCCESS = "REGISTER_COMPANY_SUCCESS";
+        public static final String INVALID_COMPANY = "INVALID_COMPANY";
+        public static final String NOT_CONDITION_UPDATE_COMPANY = "NOT_CONDITION_UPDATE_COMPANY";
         // </editor-fold>
 
         // <editor-fold desc="Message tac dong package">

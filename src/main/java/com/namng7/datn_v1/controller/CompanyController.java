@@ -1,6 +1,7 @@
 package com.namng7.datn_v1.controller;
 
 import com.namng7.datn_v1.cache.CacheManager;
+import com.namng7.datn_v1.cache.Key;
 import com.namng7.datn_v1.model.Company;
 import com.namng7.datn_v1.model.User;
 import com.namng7.datn_v1.object.ProcessRecord;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/datn/company")
 public class CompanyController {
+    StringBuilder log = new StringBuilder();
     private static final Logger logger = LogManager.getLogger(CompanyController.class);
 
     @Autowired
@@ -29,6 +31,63 @@ public class CompanyController {
         record.setObject(company);
         try{
             companyService.registerCompany(record);
+            return ResponseEntity.ok(record);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(record);
+        }
+    }
+
+    @PostMapping("/getCompanyByUserID")
+    public  ResponseEntity<?> getCompanyByUserID(@RequestBody User user){
+        ProcessRecord record = new ProcessRecord(user);
+        try {
+            if (user.getId() == null || user.getId() < 1) {
+                record.setErrorCode(Key.ErrorCode.INVALID_USER);
+                record.setMessage(Key.Message.INVALID_USER);
+                log.setLength(0);
+                log.append("User: ").append(record.getUser().getUsername()).
+                        append(": tai khoan doanh nghiep khong ton tai.");
+                logger.warn(log.toString());
+                return ResponseEntity.badRequest().body(record);
+            }
+            if (user.getId() != Key.Role.COMPANY) {
+                record.setErrorCode(Key.ErrorCode.INVALID_COMPANY_USER);
+                record.setMessage(Key.Message.INVALID_COMPANY_USER);
+                log.setLength(0);
+                log.append("User: ").append(record.getUser().getUsername()).
+                        append(": khong phai tai khoan doanh nghiep.");
+                logger.warn(log.toString());
+                return ResponseEntity.badRequest().body(record);
+            }
+
+            Company company = CacheManager.Companys.mapCompany.get(user.getId());
+            if (company == null) {
+                record.setErrorCode(Key.ErrorCode.INVALID_COMPANY);
+                record.setMessage(Key.Message.INVALID_COMPANY);
+                log.setLength(0);
+                log.append("User: ").append(record.getUser().getUsername()).
+                        append(": tai khoan khong co thong tin doanh nghiep.");
+                logger.warn(log.toString());
+                return ResponseEntity.badRequest().body(record);
+            }
+
+            record.setObject(company);
+            return ResponseEntity.ok(record);
+        }catch (Exception e){
+            log.setLength(0);
+            log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
+                    append(": loi khi lay thong tin doanh nghiep.");
+            logger.warn(log.toString());
+            return ResponseEntity.badRequest().body(record);
+        }
+    }
+
+    @PostMapping("/updateCompany")
+    public ResponseEntity<?> updateCompany(@RequestBody Company company){
+        ProcessRecord record = new ProcessRecord();
+        try{
+            record.setObject(company);
+            companyService.updateCompany(record);
             return ResponseEntity.ok(record);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(record);

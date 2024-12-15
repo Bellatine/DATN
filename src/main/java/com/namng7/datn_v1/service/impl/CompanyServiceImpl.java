@@ -15,6 +15,7 @@ import com.namng7.datn_v1.util.MessageUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -43,7 +44,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void registerCompany(ProcessRecord record){
+    public void registerCompany(ProcessRecord record  ){
         try{
             if(CacheManager.Users.AUTH_USER.getRole() != Key.Role.ADMIN && CacheManager.Users.AUTH_USER.getRole() != Key.Role.BUSSINESS){
                 record.setErrorCode(Key.ErrorCode.NOT_AUTH_CHANGE_INFO);
@@ -120,6 +121,65 @@ public class CompanyServiceImpl implements CompanyService {
             record.setMessage(MessageUtil.getMessage(Key.Message.SYSTEM_FAULT, logger));
             log.append("User: ").append(record.getUser().getUsername()).
                     append(": loi khi dang ky thong tin doanh nghiep.");
+            logger.error(log.toString(), e);
+        }
+    }
+
+    @Override
+    public void updateCompany(ProcessRecord record){
+        try{
+            Company mergeCompany = (Company) record.getObject();
+            if(mergeCompany.getUser_id() == null || mergeCompany.getUser_id() < 0l){
+                record.setErrorCode(Key.ErrorCode.INVALID_USER);
+                record.setMessage(Key.Message.INVALID_USER);
+                log.setLength(0);
+                log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
+                        append(": Cap nhat thong tin company fail do khong tim thay tai khoan");
+                logger.info(log.toString());
+                return;
+            }
+            Company targetCompany = CacheManager.Companys.mapCompany.get(mergeCompany.getUser_id());
+            if(targetCompany == null){
+                record.setErrorCode(Key.ErrorCode.INVALID_COMPANY);
+                record.setMessage(Key.Message.INVALID_COMPANY);
+                log.setLength(0);
+                log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
+                        append(": cap nhat thong tin doanh nghiep khong thanh cong do khong co thong tin doanh nghiep.");
+                logger.warn(log.toString());
+                return;
+            }
+            if(mergeCompany.getUpdated_reason() == null || mergeCompany.getUpdated_reason().isEmpty()){
+                record.setErrorCode(Key.ErrorCode.NOT_CONDITION);
+                record.setMessage(Key.Message.NOT_CONDITION_UPDATE_COMPANY);
+                log.setLength(0);
+                log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
+                        append(": cap nhat thong tin doanh nghiep khong thanh cong do khong co thong tin ly do cap nhat.");
+                logger.warn(log.toString());
+                return;
+            }
+            if(CacheManager.Users.AUTH_USER.getRole() == Key.Role.ADMIN ||
+                    (CacheManager.Users.AUTH_USER.getRole() == Key.Role.BUSSINESS && targetCompany.getBussiness_care().equals(CacheManager.Users.AUTH_USER.getId()))||
+                    (CacheManager.Users.AUTH_USER.getRole() == Key.Role.COMPANY && targetCompany.getUser_id().equals(CacheManager.Users.AUTH_USER.getId()))){
+                CompanyUtil.mergeInfor(record, targetCompany);
+                companyRepository.save(targetCompany);
+                log.setLength(0);
+                log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
+                        append(": Cap nhat thong tin doanh nghiep thanh cong.");
+                logger.warn(log.toString());
+            }else{
+                record.setErrorCode(Key.ErrorCode.NOT_AUTH_CHANGE_INFO);
+                record.setMessage(MessageUtil.getMessage(Key.Message.NOT_AUTH_CHANGE_INFO, logger));
+                log.setLength(0);
+                log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
+                        append(": tai khoan khong du quyen thay doi thong tin. Role: ").append(CacheManager.Users.AUTH_USER.getRole());
+                logger.warn(log.toString());
+            }
+        }catch (Exception e){
+            log.setLength(0);
+            record.setErrorCode(Key.ErrorCode.SYSTEM_FAULT);
+            record.setMessage(MessageUtil.getMessage(Key.Message.SYSTEM_FAULT, logger));
+            log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
+                    append(": loi khi cap nhat thong tin doanh nghiep.");
             logger.error(log.toString(), e);
         }
     }

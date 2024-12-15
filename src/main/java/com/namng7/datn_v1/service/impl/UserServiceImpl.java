@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
                 return registerProcessRecord;
             }
             user.setCreated_time(new Date());
-            User savedUser = UserUtil.saveUser(user,passwordEncoder,userRepository);
+            User savedUser = UserUtil.saveUser(user, passwordEncoder, userRepository);
             registerProcessRecord.setUser(savedUser);
             registerProcessRecord.setErrorCode(Key.ErrorCode.SUCCESS);
             registerProcessRecord.setMessage(MessageUtil.getMessage(Key.Message.REGISTER_USER_SUCCESS, logger));
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
 
         User user = CacheManager.Users.MapUserByUsername.get(updateRecord.getUser().getUsername());
 
-        if(user == null){
+        if (user == null) {
             updateRecord.setErrorCode(Key.ErrorCode.INVALID_USER);
             updateRecord.setMessage(MessageUtil.getMessage(Key.Message.INVALID_USER, logger));
             log.setLength(0);
@@ -111,15 +111,15 @@ public class UserServiceImpl implements UserService {
 
         User userChange = null;
 
-        if(CacheManager.Users.AUTH_USER.getUsername().equals(user.getUsername())){
+        if (CacheManager.Users.AUTH_USER.getUsername().equals(user.getUsername())) {
             userChange = CacheManager.Users.AUTH_USER;
             log.setLength(0);
             log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
                     append(": cap nhat thong tin.");
             logger.info(log.toString());
-        }else if((CacheManager.Users.AUTH_USER.getRole() == Key.Role.ADMIN && user.getRole() == Key.Role.COMPANY) ||
+        } else if (CacheManager.Users.AUTH_USER.getRole() == Key.Role.ADMIN ||
                 (CacheManager.Users.AUTH_USER.getRole() == Key.Role.BUSSINESS && user.getRole() == Key.Role.COMPANY &&
-                        (user.getStatus() == 0 ||CacheManager.Companys.mapCompany.get(user.getId()).getBussiness_care().equals(CacheManager.Users.AUTH_USER.getId())))){
+                        (user.getStatus() == 0 || CacheManager.Companys.mapCompany.get(user.getId()).getBussiness_care().equals(CacheManager.Users.AUTH_USER.getId())))) {
             userChange = user;
             log.setLength(0);
             log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
         if (userChange != null) {
             try {
                 UserUtil.mergeInfor(updateRecord.getUser(), user);
-                User savedUser = UserUtil.saveUser(user, passwordEncoder,userRepository);
+                User savedUser = UserUtil.saveUser(user, passwordEncoder, userRepository);
                 updateRecord.setUser(savedUser);
                 updateRecord.setErrorCode(Key.ErrorCode.SUCCESS);
                 updateRecord.setMessage(MessageUtil.getMessage(Key.Message.UPDATE_USER_INFO_SUCCESS, logger));
@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
                         append(": loi khi cap nhat thong tin tai khoan");
                 logger.error(log.toString(), e);
             }
-        }else{
+        } else {
             updateRecord.setErrorCode(Key.ErrorCode.NOT_AUTH_CHANGE_INFO);
             updateRecord.setMessage(MessageUtil.getMessage(Key.Message.NOT_AUTH_CHANGE_INFO, logger));
             log.setLength(0);
@@ -161,7 +161,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void getUserByUserName(ProcessRecord record) {
         User user = CacheManager.Users.MapUserByUsername.get(record.getUser().getUsername());
-        if(user == null){
+        if (user == null) {
             record.setErrorCode(Key.ErrorCode.INVALID_USER);
             record.setMessage(MessageUtil.getMessage(Key.Message.INVALID_USER, logger));
             log.setLength(0);
@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService {
             logger.warn(log.toString());
             return;
         }
-        if(CacheManager.Users.AUTH_USER.getRole() != Key.Role.ADMIN && CacheManager.Users.AUTH_USER.getRole() != Key.Role.BUSSINESS){
+        if (CacheManager.Users.AUTH_USER.getRole() != Key.Role.ADMIN && CacheManager.Users.AUTH_USER.getRole() != Key.Role.BUSSINESS) {
             record.setErrorCode(Key.ErrorCode.NOT_AUTH_CHANGE_INFO);
             record.setMessage(MessageUtil.getMessage(Key.Message.NOT_AUTH_CHANGE_INFO, logger));
             log.setLength(0);
