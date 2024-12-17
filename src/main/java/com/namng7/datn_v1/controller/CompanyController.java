@@ -50,7 +50,10 @@ public class CompanyController {
                 logger.warn(log.toString());
                 return ResponseEntity.badRequest().body(record);
             }
-            if (user.getId() != Key.Role.COMPANY) {
+
+            User companyUser = CacheManager.Users.MapUserByUserID.get((user.getId()));
+
+            if (companyUser == null || companyUser.getRole() != Key.Role.COMPANY) {
                 record.setErrorCode(Key.ErrorCode.INVALID_COMPANY_USER);
                 record.setMessage(Key.Message.INVALID_COMPANY_USER);
                 log.setLength(0);
@@ -61,6 +64,7 @@ public class CompanyController {
             }
 
             Company company = CacheManager.Companys.mapCompany.get(user.getId());
+
             if (company == null) {
                 record.setErrorCode(Key.ErrorCode.INVALID_COMPANY);
                 record.setMessage(Key.Message.INVALID_COMPANY);
@@ -70,7 +74,7 @@ public class CompanyController {
                 logger.warn(log.toString());
                 return ResponseEntity.badRequest().body(record);
             }
-
+            record.setUser(companyUser);
             record.setObject(company);
             return ResponseEntity.ok(record);
         }catch (Exception e){

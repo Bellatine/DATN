@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "441854aa-77ac-4039-95ec-d67ce62db56f",
+		"name": "DATN_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33604032"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "signin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"traduvi1\",\r\n  \"password\": \"@traduvi1\",\r\n  \"email\": \"traduvi@mydestiny.com.vn\",\r\n  \"fullname\": \"Dương Thị Trang\",\r\n  \"status\": \"0\",\r\n  \"role\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8888/api/datn/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"traduvi7\",\r\n  \"password\": \"@traduvi1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8888/api/datn/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "update_user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"traduvi8\",\r\n  \"email\": \"traduvi1@giangnam.com.vn\",\r\n  \"fullname\": \"Dương Thị Trang\",\r\n  \"password\" : \"@traduvi1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8888/api/datn/auth/update"
+					},
+					"response": []
+				},
+				{
+					"name": "getUserByUserName",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"traduvi6\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8888/api/datn/auth/getUserByUserName"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "company",
+			"item": [
+				{
+					"name": "registerCompany",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"code\": \"HUST\",\r\n  \"name\": \"Hanoi University of Science and Technology\",\r\n  \"description\": \"Đại học Bách Khoa Hà Nội\",\r\n  \"tax\": \"123456\",\r\n  \"email\": \"bkhn@hust.edu.vn\",\r\n  \"phone\": \"0123456789\",\r\n  \"represent\": \"Huỳnh Quyết Thắng\",\r\n  \"address\": \"Số 1, Đại Cồ Việt, Hà Nội\",\r\n  \"bank\": \"123456798\",\r\n  \"status\": \"1\",\r\n  \"user_id\": \"11\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8888/api/datn/company/register"
+					},
+					"response": []
+				},
+				{
+					"name": "getCompanyByUserID",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 11,\r\n    \"username\": \"traduvi6\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8888/api/datn/company/getCompanyByUserID"
+					},
+					"response": []
+				},
+				{
+					"name": "updateCompany",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"industry\": \"Bộ giáo dục và Đào tạo\",\r\n    \"tax\": \"666666\",\r\n    \"phone\": \"0987654321\",\r\n    \"bank\": \"888888888\",\r\n    \"updated_reason\": \"Cập nhật thông tin lần 1\",\r\n    \"bussiness_care\": 12,\r\n    \"user_id\": 11\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8888/api/datn/company/updateCompany"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "service",
+			"item": [
+				{
+					"name": "addPackage",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"package_code\": \"VIP_B\",\r\n  \"package_name\": \"Nap VIP B\",\r\n  \"description\": \"50K/500 kim cương game B\",\r\n  \"add_value\": \"500\",\r\n  \"ws_id\": \"1\",\r\n  \"valid_time\": \"100\",\r\n  \"price\": \"50000\",\r\n  \"status\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8888/api/datn/service/addPackage"
+					},
+					"response": []
+				},
+				{
+					"name": "addGamecodeModel",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"model_code\": \"VIP_B_basic\",\r\n  \"model_name\": \"Nap VIP B basic\",\r\n  \"description\": \"Mua trên 20 gamecode VIP_B sẽ được chiết khấu 7%\",\r\n  \"discount\": \"7\",\r\n  \"package_id\": \"2\",\r\n  \"start_date\": \"2024-12-18T21:52:37.000+00:00\",\r\n  \"valid_date\": \"2025-12-13T21:52:37.000+00:00\",\r\n  \"number_required\": \"20\",\r\n  \"status\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8888/api/datn/service/addModel"
+					},
+					"response": []
+				},
+				{
+					"name": "addServiceConfig",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"company_id\": \"4\",\r\n  \"gamecode_model_id\": \"4\",\r\n  \"start_date\": \"2024-12-18T21:52:37.000+00:00\",\r\n  \"valid_date\": \"2025-12-13T21:52:37.000+00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8888/api/datn/service/addServiceConfig"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
