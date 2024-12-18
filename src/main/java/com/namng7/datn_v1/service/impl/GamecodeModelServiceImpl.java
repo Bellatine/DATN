@@ -24,40 +24,49 @@ public class GamecodeModelServiceImpl implements GamecodeModelService {
     @Autowired
     private GamecodeModelRepsitory gamecodeModelRepsitory;
 
+    private void validateProcess(ProcessRecord record) {
+        if (CacheManager.Users.AUTH_USER.getRole() != Key.Role.ADMIN && CacheManager.Users.AUTH_USER.getRole() != Key.Role.BUSSINESS) {
+            record.setErrorCode(Key.ErrorCode.NOT_AUTH_CHANGE_INFO);
+            record.setMessage(MessageUtil.getMessage(Key.Message.NOT_AUTH_CHANGE_INFO, logger));
+            log.setLength(0);
+            log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
+                    append(": tai khoan khong du quyen thay doi thong tin. Role: ").append(CacheManager.Users.AUTH_USER.getRole());
+            logger.warn(log.toString());
+            return;
+        }
+        GamecodeModel gamecodeModel = (GamecodeModel) record.getObject();
+        if (ServiceUtil.validateModelConfig(gamecodeModel) != Key.ErrorCode.SUCCESS) {
+            record.setErrorCode(Key.ErrorCode.INVALID_MODEL);
+            record.setMessage(MessageUtil.getMessage(Key.Message.INVALID_ADD_MODEL, logger));
+            log.setLength(0);
+            log.append("User: ").append(record.getUser().getUsername()).
+                    append(": thong tin dich vu khong hop le.");
+            logger.warn(log.toString());
+            return;
+        }
+
+        record.setErrorCode(Key.ErrorCode.SUCCESS);
+    }
+
     @Override
     public void addGamecodeModel(ProcessRecord record) {
         try {
-            if (CacheManager.Users.AUTH_USER.getRole() != Key.Role.ADMIN && CacheManager.Users.AUTH_USER.getRole() != Key.Role.BUSSINESS) {
-                record.setErrorCode(Key.ErrorCode.NOT_AUTH_CHANGE_INFO);
-                record.setMessage(MessageUtil.getMessage(Key.Message.NOT_AUTH_CHANGE_INFO, logger));
+            validateProcess(record);
+            if (record.getErrorCode() == Key.ErrorCode.SUCCESS) {
+                GamecodeModel gamecodeModel = (GamecodeModel) record.getObject();
+                gamecodeModel.setCreate_date(new Date());
+                gamecodeModel.setCreate_user_id(CacheManager.Users.AUTH_USER.getId());
+                gamecodeModel.setUpdated_user_id(CacheManager.Users.AUTH_USER.getId());
+                GamecodeModel savedModel = ServiceUtil.saveGamecodeModel(gamecodeModel, gamecodeModelRepsitory);
+                record.setObject(savedModel);
+                record.setErrorCode(Key.ErrorCode.SUCCESS);
+                record.setMessage(Key.Message.ADD_MODEL_SUCCESS);
                 log.setLength(0);
                 log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
-                        append(": tai khoan khong du quyen thay doi thong tin. Role: ").append(CacheManager.Users.AUTH_USER.getRole());
-                logger.warn(log.toString());
-                return;
+                        append(": them moi thanh cong dich vu: ").append(savedModel.getModel_name());
+                logger.info(log.toString());
             }
-            GamecodeModel gamecodeModel = (GamecodeModel) record.getObject();
-            if (ServiceUtil.validateModelConfig(gamecodeModel) != Key.ErrorCode.SUCCESS) {
-                record.setErrorCode(Key.ErrorCode.INVALID_PACKAGE);
-                record.setMessage(MessageUtil.getMessage(Key.Message.INVALID_ADD_PACKAGE, logger));
-                log.setLength(0);
-                log.append("User: ").append(record.getUser().getUsername()).
-                        append(": thong tin dich vu khong hop le.");
-                logger.warn(log.toString());
-                return;
-            }
-            gamecodeModel.setCreate_date(new Date());
-            gamecodeModel.setCreate_user_id(CacheManager.Users.AUTH_USER.getId());
-            gamecodeModel.setUpdated_user_id(CacheManager.Users.AUTH_USER.getId());
-            GamecodeModel savedModel = ServiceUtil.saveGamecodeModel(gamecodeModel, gamecodeModelRepsitory);
-            record.setObject(savedModel);
-            record.setErrorCode(Key.ErrorCode.SUCCESS);
-            record.setMessage(Key.Message.ADD_PACKAGE_SUCCESS);
-            log.setLength(0);
-            log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
-                    append(": them moi thanh cong dich vu: ").append(savedModel.getModel_name());
-            logger.info(log.toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.setLength(0);
             record.setErrorCode(Key.ErrorCode.SYSTEM_FAULT);
             record.setMessage(MessageUtil.getMessage(Key.Message.SYSTEM_FAULT, logger));
@@ -69,6 +78,37 @@ public class GamecodeModelServiceImpl implements GamecodeModelService {
 
     @Override
     public void updateGamecodeModel(ProcessRecord record) {
-
+        try {
+            validateProcess(record);
+            if (record.getErrorCode() == Key.ErrorCode.SUCCESS) {
+                GamecodeModel mergeModel = (GamecodeModel) record.getObject();
+                GamecodeModel targetModel = CacheManager.MapGamecodeModelByID.get(mergeModel.getId());
+                if(targetModel == null){
+                    record.setErrorCode(Key.ErrorCode.INVALID_MODEL);
+                    record.setMessage(MessageUtil.getMessage(Key.Message.INVALID_ADD_MODEL, logger));
+                    log.setLength(0);
+                    log.append("User: ").append(record.getUser().getUsername()).
+                            append(": thong tin dich vu khong hop le.");
+                    logger.warn(log.toString());
+                    return;
+                }
+                ServiceUtil.mergeGamecodeModelInfor(record, targetModel);
+                GamecodeModel savedModel = gamecodeModelRepsitory.save(targetModel);
+                record.setObject(savedModel);
+                record.setErrorCode(Key.ErrorCode.SUCCESS);
+                record.setMessage(Key.Message.UPDATE_MODEL_SUCCESS);
+                log.setLength(0);
+                log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
+                        append(": cap nhat thanh cong dich vu: ").append(savedModel.getModel_name());
+                logger.info(log.toString());
+            }
+        } catch (Exception e) {
+            log.setLength(0);
+            record.setErrorCode(Key.ErrorCode.SYSTEM_FAULT);
+            record.setMessage(MessageUtil.getMessage(Key.Message.SYSTEM_FAULT, logger));
+            log.append("User: ").append(record.getUser().getUsername()).
+                    append(": loi khi cap nhat dich vu.");
+            logger.error(log.toString(), e);
+        }
     }
 }

@@ -24,13 +24,13 @@ public class PackageConfig {
     private String description;
 
     @Column(nullable = false)
-    private int status;
+    private Integer status;
 
     @Column(nullable = false)
-    private int add_value;
+    private Integer add_value;
 
     @Column(nullable = false)
-    private int ws_id;
+    private Long ws_id;
 
     @Column(nullable = false)
     private Date valid_time;
@@ -42,7 +42,7 @@ public class PackageConfig {
     private Long create_user_id;
 
     @Column(nullable = false)
-    private int price;
+    private Integer price;
 
     @Column(nullable = false)
     private Long updated_user_id;

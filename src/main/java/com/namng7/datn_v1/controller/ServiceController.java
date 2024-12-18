@@ -42,6 +42,18 @@ public class ServiceController {
         }
     }
 
+    @PostMapping("/updatePackageConfig")
+    public ResponseEntity<?> updatePackageConfig(@RequestBody PackageConfig packageConfig){
+        ProcessRecord record = new ProcessRecord();
+        record.setObject(packageConfig);
+        try{
+            packageConfigService.updatePackageConfig(record);
+            return ResponseEntity.ok(record);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(record);
+        }
+    }
+
     @PostMapping("/addModel")
     public ResponseEntity<?> addGamecodeModel(@RequestBody GamecodeModel gamecodeModel){
         ProcessRecord record = new ProcessRecord();
@@ -54,12 +66,36 @@ public class ServiceController {
         }
     }
 
+    @PostMapping("/updateGamecodeModel")
+    public ResponseEntity<?> updateGamecodeModel(@RequestBody GamecodeModel gamecodeModel){
+        ProcessRecord record = new ProcessRecord();
+        record.setObject(gamecodeModel);
+        try{
+            gamecodeModelService.updateGamecodeModel(record);
+            return ResponseEntity.ok(record);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(record);
+        }
+    }
+
     @PostMapping("/addServiceConfig")
     public ResponseEntity<?> addServiceConfig(@RequestBody ServiceConfig serviceConfig){
         ProcessRecord record = new ProcessRecord();
         record.setObject(serviceConfig);
         try{
             serviceConfigService.addServiceConfig(record);
+            return ResponseEntity.ok(record);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(record);
+        }
+    }
+
+    @PostMapping("/updateServiceConfig")
+    public ResponseEntity<?> updateServiceConfig(@RequestBody ServiceConfig serviceConfig){
+        ProcessRecord record = new ProcessRecord();
+        record.setObject(serviceConfig);
+        try{
+            serviceConfigService.updateServiceConfig(record);
             return ResponseEntity.ok(record);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(record);

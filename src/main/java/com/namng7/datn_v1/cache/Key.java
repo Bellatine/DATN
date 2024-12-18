@@ -34,6 +34,14 @@ public class Key {
         public static final int INVALID_PACKAGE = 31;
         // </editor-fold>
 
+        // <editor-fold desc="ErrorCode tac dong service config">
+        public static final int INVALID_SERVICE = 41;
+        // </editor-fold>
+
+        // <editor-fold desc="ErrorCode tac dong company">
+        public static final int INVALID_MODEL = 51;
+        // </editor-fold>
+
         // <editor-fold desc="ErrorCode tac dong company">
 
         // </editor-fold>
@@ -64,6 +72,19 @@ public class Key {
         // <editor-fold desc="Message tac dong package">
         public static final String INVALID_ADD_PACKAGE = "INVALID_ADD_PACKAGE";
         public static final String ADD_PACKAGE_SUCCESS = "ADD_PACKAGE_SUCCESS";
+        public static final String UPDATE_PACKAGE_SUCCESS = "UPDATE_PACKAGE_SUCCESS";
+        // </editor-fold>
+
+        // <editor-fold desc="ErrorCode tac dong service config">
+        public static final String INVALID_ADD_SERVICE = "INVALID_ADD_SERVICE";
+        public static final String ADD_SERVICE_SUCCESS = "ADD_SERVICE_SUCCESS";
+        public static final String UPDATE_SERVICE_SUCCESS = "UPDATE_SERVICE_SUCCESS";
+        // </editor-fold>
+
+        // <editor-fold desc="ErrorCode tac dong gamecodeModel">
+        public static final String INVALID_ADD_MODEL = "INVALID_ADD_MODEL";
+        public static final String ADD_MODEL_SUCCESS = "ADD_MODEL_SUCCESS";
+        public static final String UPDATE_MODEL_SUCCESS = "UPDATE_MODEL_SUCCESS";
         // </editor-fold>
 
         // <editor-fold desc="ErrorCode tac dong company">

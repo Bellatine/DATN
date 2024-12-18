@@ -27,7 +27,7 @@ public class GamecodeModel {
     private String description;
 
     @Column(nullable = false)
-    private int status;
+    private Integer status;
 
     @Column(nullable = false)
     private Date start_date;
@@ -51,5 +51,5 @@ public class GamecodeModel {
     private Long package_id;
 
     @Column(nullable = false)
-    private int number_required;
+    private Integer number_required;
 }
