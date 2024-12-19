@@ -12,4 +12,7 @@ public interface ServiceConfigReposiory extends JpaRepository<ServiceConfig, Lon
 
     @Query("SELECT s FROM ServiceConfig s WHERE s.id = :id")
     List<ServiceConfig> getServiceConfigById(@Param("id") Long id);
+
+    @Query("SELECT s FROM ServiceConfig s WHERE s.company_id = :id")
+    List<ServiceConfig> getServiceConfigByCompanyId(@Param("id") Long id);
 }

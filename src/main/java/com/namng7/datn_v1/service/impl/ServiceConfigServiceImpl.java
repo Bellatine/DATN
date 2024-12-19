@@ -2,6 +2,7 @@ package com.namng7.datn_v1.service.impl;
 
 import com.namng7.datn_v1.cache.CacheManager;
 import com.namng7.datn_v1.cache.Key;
+import com.namng7.datn_v1.model.Company;
 import com.namng7.datn_v1.model.PackageConfig;
 import com.namng7.datn_v1.model.ServiceConfig;
 import com.namng7.datn_v1.object.ProcessRecord;
@@ -110,6 +111,18 @@ public class ServiceConfigServiceImpl implements ServiceConfigService {
             log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
                     append(": loi khi thay doi thong tin goi dich vu.");
             logger.error(log.toString(), e);
+        }
+    }
+
+    @Override
+    public void getCompanyServiceConfig(ProcessRecord record){
+        Company company = CacheManager.Companys.mapCompany.get()
+        if(record.getUser().getRole().equals(Key.Role.ADMIN)){
+
+        }else if(record.getUser().getRole().equals(Key.Role.BUSSINESS && )){
+
+        }else{
+
         }
     }
 }

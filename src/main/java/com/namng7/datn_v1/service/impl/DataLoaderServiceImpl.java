@@ -83,17 +83,13 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     }
 
     @Override
-    public Map<Long, GamecodeModel> loadAllGamecodeModel() {
+    public List<GamecodeModel> loadAllGamecodeModel() {
         List<GamecodeModel> listAllGamecodeModel = gamecodeModelRepsitory.findAll();
-        Map<Long, GamecodeModel> mapAllGamecodeModel = new HashMap<>();
         if(listAllGamecodeModel == null || listAllGamecodeModel.isEmpty()) {
             logger.warn("Load gamecodeModel fail!");
             return null;
         }
-        for(GamecodeModel gamecodeModel : listAllGamecodeModel){
-            mapAllGamecodeModel.put(gamecodeModel.getId(), gamecodeModel);
-        }
-        return mapAllGamecodeModel;
+        return listAllGamecodeModel;
     }
 
     @Override

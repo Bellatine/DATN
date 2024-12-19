@@ -51,15 +51,6 @@ public class ServiceController {
         }
     }
 
-    @PostMapping("/getAllPackageConfig")
-    public ResponseEntity<?> getAllPackageConfig(@RequestBody ProcessRecord record){
-        try{
-
-        }catch (Exception e){
-
-        }
-    }
-
     @PostMapping("/addModel")
     public ResponseEntity<?> addGamecodeModel(@RequestBody GamecodeModel gamecodeModel){
         ProcessRecord record = new ProcessRecord();
@@ -78,6 +69,26 @@ public class ServiceController {
         record.setObject(gamecodeModel);
         try{
             gamecodeModelService.updateGamecodeModel(record);
+            return ResponseEntity.ok(record);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(record);
+        }
+    }
+
+    @PostMapping("/getAllGameCodeModel")
+    public ResponseEntity<?> getAllPackageConfig(@RequestBody ProcessRecord record){
+        try{
+            gamecodeModelService.getAllGameCodeModel(record);
+            return ResponseEntity.ok(record);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(record);
+        }
+    }
+
+    @PostMapping("/getAllGameCodeModelByRole")
+    public ResponseEntity<?> getAllGameCodeModelByRole(@RequestBody ProcessRecord record){
+        try{
+            gamecodeModelService.getAllGameCodeModelByRole(record);
             return ResponseEntity.ok(record);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(record);
