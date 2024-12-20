@@ -30,5 +30,8 @@ public class TransactionBuyGamecode {
     private Date transaction_time;
 
     @Column(nullable = false)
-    private int total_item;
+    private Integer total_item;
+
+    @Column(nullable = false)
+    private Long model_id;
 }

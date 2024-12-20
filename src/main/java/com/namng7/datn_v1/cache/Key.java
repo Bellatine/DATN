@@ -38,7 +38,7 @@ public class Key {
         public static final int INVALID_SERVICE = 41;
         // </editor-fold>
 
-        // <editor-fold desc="ErrorCode tac dong company">
+        // <editor-fold desc="ErrorCode tac dong gamecode model">
         public static final int INVALID_MODEL = 51;
         // </editor-fold>
 
@@ -85,6 +85,8 @@ public class Key {
         public static final String INVALID_ADD_MODEL = "INVALID_ADD_MODEL";
         public static final String ADD_MODEL_SUCCESS = "ADD_MODEL_SUCCESS";
         public static final String UPDATE_MODEL_SUCCESS = "UPDATE_MODEL_SUCCESS";
+
+        public static final String GET_MODEL_SUCCESS = "GET_MODEL_SUCCESS";
         // </editor-fold>
 
         // <editor-fold desc="ErrorCode tac dong company">

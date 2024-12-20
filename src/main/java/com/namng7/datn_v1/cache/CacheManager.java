@@ -9,6 +9,8 @@ public class CacheManager {
 
     public static Map<String, String> MapMessageByMessageCode;
     public static Map<Long, GamecodeModel> MapGamecodeModelByID;
+
+    public static List<GamecodeModel> ListAllGamecodeModel;
     public static Map<Long, PackageConfig> MapPackageConfigByID;
     public static Map<Long, WebserviceConfig> MapWsConfigByID;
 

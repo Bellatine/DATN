@@ -2,19 +2,25 @@ package com.namng7.datn_v1.service.impl;
 
 import com.namng7.datn_v1.cache.CacheManager;
 import com.namng7.datn_v1.cache.Key;
+import com.namng7.datn_v1.model.Company;
 import com.namng7.datn_v1.model.GamecodeModel;
 import com.namng7.datn_v1.model.PackageConfig;
+import com.namng7.datn_v1.model.ServiceConfig;
 import com.namng7.datn_v1.object.ProcessRecord;
 import com.namng7.datn_v1.repository.GamecodeModelRepsitory;
+import com.namng7.datn_v1.repository.ServiceConfigReposiory;
 import com.namng7.datn_v1.service.GamecodeModelService;
 import com.namng7.datn_v1.util.MessageUtil;
 import com.namng7.datn_v1.util.ServiceUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class GamecodeModelServiceImpl implements GamecodeModelService {
@@ -23,6 +29,9 @@ public class GamecodeModelServiceImpl implements GamecodeModelService {
 
     @Autowired
     private GamecodeModelRepsitory gamecodeModelRepsitory;
+
+    @Autowired
+    private ServiceConfigReposiory serviceConfigReposiory;
 
     private void validateProcess(ProcessRecord record) {
         if (CacheManager.Users.AUTH_USER.getRole() != Key.Role.ADMIN && CacheManager.Users.AUTH_USER.getRole() != Key.Role.BUSSINESS) {
@@ -83,7 +92,7 @@ public class GamecodeModelServiceImpl implements GamecodeModelService {
             if (record.getErrorCode() == Key.ErrorCode.SUCCESS) {
                 GamecodeModel mergeModel = (GamecodeModel) record.getObject();
                 GamecodeModel targetModel = CacheManager.MapGamecodeModelByID.get(mergeModel.getId());
-                if(targetModel == null){
+                if (targetModel == null) {
                     record.setErrorCode(Key.ErrorCode.INVALID_MODEL);
                     record.setMessage(MessageUtil.getMessage(Key.Message.INVALID_ADD_MODEL, logger));
                     log.setLength(0);
@@ -101,6 +110,73 @@ public class GamecodeModelServiceImpl implements GamecodeModelService {
                 log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
                         append(": cap nhat thanh cong dich vu: ").append(savedModel.getModel_name());
                 logger.info(log.toString());
+            }
+        } catch (Exception e) {
+            log.setLength(0);
+            record.setErrorCode(Key.ErrorCode.SYSTEM_FAULT);
+            record.setMessage(MessageUtil.getMessage(Key.Message.SYSTEM_FAULT, logger));
+            log.append("User: ").append(record.getUser().getUsername()).
+                    append(": loi khi cap nhat dich vu.");
+            logger.error(log.toString(), e);
+        }
+    }
+
+    @Override
+    public void getAllGameCodeModel(ProcessRecord record) {
+        try {
+            record.setObject(CacheManager.ListAllGamecodeModel);
+            record.setErrorCode(Key.ErrorCode.SUCCESS);
+            record.setMessage(Key.Message.GET_MODEL_SUCCESS);
+            log.setLength(0);
+            log.append("User: ").append(record.getUser().getUsername()).
+                    append(": view thong tin dich vu thanh cong: ");
+            logger.info(log.toString());
+        } catch (Exception e) {
+            log.setLength(0);
+            record.setErrorCode(Key.ErrorCode.SYSTEM_FAULT);
+            record.setMessage(MessageUtil.getMessage(Key.Message.SYSTEM_FAULT, logger));
+            log.append("User: ").append(record.getUser().getUsername()).
+                    append(": loi khi lay thong tin dich vu.");
+            logger.error(log.toString(), e);
+        }
+
+    }
+
+    @Override
+    public void getAllGameCodeModelByRole(ProcessRecord record) {
+        try {
+            if (record.getUser().getRole().equals(Key.Role.ADMIN) || record.getUser().getRole().equals(Key.Role.BUSSINESS)) {
+                this.getAllGameCodeModel(record);
+            } else if (record.getUser().getRole().equals(Key.Role.COMPANY)) {
+                List<GamecodeModel> gamecodeModelList = new ArrayList<>();
+                Company company = CacheManager.Companys.mapCompany.get(record.getUser().getId());
+                if (company == null) {
+                    record.setErrorCode(Key.ErrorCode.INVALID_COMPANY);
+                    record.setMessage(Key.Message.INVALID_COMPANY);
+                    log.setLength(0);
+                    log.append("User: ").append(record.getUser().getUsername()).
+                            append(": tai khoan khong co thong tin doanh nghiep.");
+                    logger.warn(log.toString());
+                    return;
+                }
+                List<ServiceConfig> listAllServiceConfig = serviceConfigReposiory.getServiceConfigByCompanyId(company.getId());
+                for (ServiceConfig serviceConfig : listAllServiceConfig) {
+                    gamecodeModelList.add(CacheManager.MapGamecodeModelByID.get(serviceConfig.getGamecode_model_id()));
+                }
+                record.setObject(gamecodeModelList);
+                record.setErrorCode(Key.ErrorCode.SUCCESS);
+                record.setMessage(Key.Message.UPDATE_MODEL_SUCCESS);
+                log.setLength(0);
+                log.append("User: ").append(CacheManager.Users.AUTH_USER.getUsername()).
+                        append(": view thong tin dich vu thanh cong: ");
+                logger.info(log.toString());
+            } else {
+                record.setErrorCode(Key.ErrorCode.NOT_AUTH_CHANGE_INFO);
+                record.setMessage(MessageUtil.getMessage(Key.Message.NOT_AUTH_CHANGE_INFO, logger));
+                log.setLength(0);
+                log.append("User: ").append(record.getUser().getUsername()).
+                        append(": tai khoan khong du quyen tac dong thong tin. Role: ").append(record.getUser().getRole());
+                logger.warn(log.toString());
             }
         } catch (Exception e) {
             log.setLength(0);
