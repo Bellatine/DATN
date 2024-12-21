@@ -15,13 +15,13 @@ public class TransactionBuyGamecode {
     private Long id;
 
     @Column(nullable = false)
-    private int wallet_before;
+    private Long wallet_before;
 
     @Column(nullable = false)
-    private int wallet_after;
+    private Long wallet_after;
 
     @Column(nullable = false)
-    private int wallet_consumption;
+    private Long wallet_consumption;
 
     @Column(nullable = false)
     private Long company_id;

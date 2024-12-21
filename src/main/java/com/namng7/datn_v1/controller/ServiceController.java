@@ -3,10 +3,12 @@ package com.namng7.datn_v1.controller;
 import com.namng7.datn_v1.model.GamecodeModel;
 import com.namng7.datn_v1.model.PackageConfig;
 import com.namng7.datn_v1.model.ServiceConfig;
+import com.namng7.datn_v1.model.TransactionBuyGamecode;
 import com.namng7.datn_v1.object.ProcessRecord;
 import com.namng7.datn_v1.service.GamecodeModelService;
 import com.namng7.datn_v1.service.PackageConfigService;
 import com.namng7.datn_v1.service.ServiceConfigService;
+import com.namng7.datn_v1.service.TransactionBuyGamecodeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class ServiceController {
 
     @Autowired
     private ServiceConfigService serviceConfigService;
+
+    @Autowired
+    private TransactionBuyGamecodeService transactionBuyGamecode;
 
     @PostMapping("/addPackage")
     public ResponseEntity<?> addPackageConfig(@RequestBody PackageConfig packageConfig){
@@ -118,4 +123,15 @@ public class ServiceController {
             return ResponseEntity.badRequest().body(record);
         }
     }
+
+    @PostMapping("/buyGamecode")
+    public ResponseEntity<?> buyGamecode(@RequestBody ProcessRecord record){
+        try{
+            transactionBuyGamecode.buyGameCodeService(record);
+            return ResponseEntity.ok(record);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(record);
+        }
+    }
+
 }

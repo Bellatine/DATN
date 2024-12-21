@@ -116,13 +116,13 @@ public class ServiceConfigServiceImpl implements ServiceConfigService {
 
     @Override
     public void getCompanyServiceConfig(ProcessRecord record){
-        Company company = CacheManager.Companys.mapCompany.get()
-        if(record.getUser().getRole().equals(Key.Role.ADMIN)){
-
-        }else if(record.getUser().getRole().equals(Key.Role.BUSSINESS && )){
-
-        }else{
-
-        }
+//        Company company = CacheManager.Companys.mapCompany.get()
+//        if(record.getUser().getRole().equals(Key.Role.ADMIN)){
+//
+//        }else if(record.getUser().getRole().equals(Key.Role.BUSSINESS && )){
+//
+//        }else{
+//
+//        }
     }
 }

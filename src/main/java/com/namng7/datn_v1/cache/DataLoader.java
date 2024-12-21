@@ -13,6 +13,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.namng7.datn_v1.cache.CacheManager.ListAllGamecodeModel;
@@ -38,6 +39,7 @@ public class DataLoader implements ApplicationRunner {
             CacheManager.Users.MapUserByUserID = dataLoaderService.mapUserByUserID();
             CacheManager.Companys.mapCompany = dataLoaderService.loadAllCompany();
             ListAllGamecodeModel = dataLoaderService.loadAllGamecodeModel();
+            MapGamecodeModelByID = new HashMap<>();
             for(GamecodeModel gamecodeModel : ListAllGamecodeModel){
                 MapGamecodeModelByID.put(gamecodeModel.getId(), gamecodeModel);
             }

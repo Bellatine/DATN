@@ -161,7 +161,9 @@ public class GamecodeModelServiceImpl implements GamecodeModelService {
                 }
                 List<ServiceConfig> listAllServiceConfig = serviceConfigReposiory.getServiceConfigByCompanyId(company.getId());
                 for (ServiceConfig serviceConfig : listAllServiceConfig) {
-                    gamecodeModelList.add(CacheManager.MapGamecodeModelByID.get(serviceConfig.getGamecode_model_id()));
+                    if(CacheManager.MapGamecodeModelByID.get(serviceConfig.getGamecode_model_id()) != null) {
+                        gamecodeModelList.add(CacheManager.MapGamecodeModelByID.get(serviceConfig.getGamecode_model_id()));
+                    }
                 }
                 record.setObject(gamecodeModelList);
                 record.setErrorCode(Key.ErrorCode.SUCCESS);
