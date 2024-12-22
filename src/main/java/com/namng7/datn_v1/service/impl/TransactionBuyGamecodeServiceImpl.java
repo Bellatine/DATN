@@ -9,6 +9,7 @@ import com.namng7.datn_v1.object.GenGamecodeRecord;
 import com.namng7.datn_v1.object.ProcessRecord;
 import com.namng7.datn_v1.repository.TransactionBuyGamecodeRepository;
 import com.namng7.datn_v1.repository.WalletRepository;
+import com.namng7.datn_v1.service.AesEncryptionService;
 import com.namng7.datn_v1.service.GamecodeModelService;
 import com.namng7.datn_v1.service.TransactionBuyGamecodeService;
 import com.namng7.datn_v1.util.MessageUtil;
@@ -40,6 +41,12 @@ public class TransactionBuyGamecodeServiceImpl implements TransactionBuyGamecode
 
     @Autowired
     private GamecodeModelService gamecodeModelService;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private AesEncryptionService aesEncryptionService;
 
     @Override
     public void getAllTransactionBuyGamecode(ProcessRecord record) {
@@ -155,15 +162,23 @@ public class TransactionBuyGamecodeServiceImpl implements TransactionBuyGamecode
             transactionBuyGamecode.setTransaction_time(new Date());
             transactionBuyGamecode.setCompany_id(company.getId());
             TransactionBuyGamecode savedTrans = transactionBuyGamecodeRepository.save(transactionBuyGamecode);
+            StringBuilder emailContent = new StringBuilder();
+            emailContent.append("Giao dịch mua game code thành công!").
+                    append("\nTên gamecode: " + packageConfig.getPackage_name()).
+                    append("\nSố lượng gamecode: " + transactionBuyGamecode.getTotal_item()).
+                    append("\nChiết khấu: " + gamecodeModel.getDiscount() + "%").
+                    append("\nDanh sách mã gamecode " + packageConfig.getPackage_name() + '\n');
             for(GamecodeDetail detail : response.getListGamecode()){
-
+                emailContent.append('\n' + aesEncryptionService.decrypt(detail.getGamecode())).append("\t thời hạn: ").append(detail.getValid_date());
             }
+            logger.info(emailContent.toString());
+            //emailService.sendEmail(record.getUser().getEmail(),"TB: Mua gamecode thành công!", emailContent.toString());
             record.setObject(savedTrans);
             record.setErrorCode(Key.ErrorCode.SUCCESS);
             record.setMessage(MessageUtil.getMessage(Key.Message.INVALID_COMPANY, logger));
             log.append("User: ").append(record.getUser().getUsername()).
                     append(": mua gamecode thanh cong.");
-            logger.error(log.toString());
+            logger.info(log.toString());
         }catch (Exception e) {
             log.setLength(0);
             record.setErrorCode(Key.ErrorCode.SYSTEM_FAULT);

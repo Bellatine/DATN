@@ -79,6 +79,9 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/changePassword")
+
+
     @DeleteMapping("/{userAdmin}/{userName}")
     public ResponseEntity<?> removeUser(@PathVariable String userAdmin, @PathVariable String userName){
         return ResponseEntity.ok("ok");

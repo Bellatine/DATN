@@ -12,6 +12,7 @@ public class GamecodeDetail {
     private String gamecode;
     private String serial;
     private Date start_date;
+    private Date valid_date;
     private Date create_date;
     private Integer status;
 }

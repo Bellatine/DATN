@@ -144,5 +144,16 @@ create table configuration
     id        INT AUTO_INCREMENT PRIMARY KEY,
     `key`     varchar(100),
     content   varchar(1000),
-    module_id ENUM('0', '1', '2') DEFAULT '0'
+    module_id int DEFAULT 0
+);
+
+create table gamecode_detail
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    gamecode    varchar(12),
+    serial      VARCHAR(12),
+    create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    start_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    valid_date  TIMESTAMP,
+    status      int       default 0
 );
