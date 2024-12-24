@@ -46,7 +46,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         Map<String, User> mapUsers = new HashMap<>();
         if(listUsers == null || listUsers.isEmpty()){
             logger.error("Load user fail! ");
-            return null;
+            return mapUsers;
         }
         for(User user : listUsers){
             mapUsers.put(user.getUsername(), user);
@@ -60,7 +60,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         Map<Long, User> mapUsers = new HashMap<>();
         if(listUsers == null || listUsers.isEmpty()){
             logger.error("Load user fail! ");
-            return null;
+            return mapUsers;
         }
         for(User user : listUsers){
             mapUsers.put(user.getId(), user);
@@ -74,7 +74,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         Map<Long, Company> mapAllCompany = new HashMap<>();
         if(listAllCompany == null || listAllCompany.isEmpty()){
             logger.warn("Load company fail!");
-            return null;
+            return mapAllCompany;
         }
         for(Company company : listAllCompany){
             mapAllCompany.put(company.getUser_id(), company);
@@ -87,7 +87,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         List<GamecodeModel> listAllGamecodeModel = gamecodeModelRepsitory.findAll();
         if(listAllGamecodeModel == null || listAllGamecodeModel.isEmpty()) {
             logger.warn("Load gamecodeModel fail!");
-            return null;
+            return listAllGamecodeModel;
         }
         return listAllGamecodeModel;
     }
@@ -98,7 +98,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         Map<Long, PackageConfig> mapAllPackageConfig = new HashMap<>();
         if(listAllPackageConfig == null || listAllPackageConfig.isEmpty()) {
             logger.warn("Load packageConfig fail!");
-            return null;
+            return mapAllPackageConfig;
         }
         for(PackageConfig packageConfig : listAllPackageConfig){
             mapAllPackageConfig.put(packageConfig.getId(), packageConfig);
@@ -112,7 +112,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         Map<Long, WebserviceConfig> mapAllWsConfig = new HashMap<>();
         if(listAllWebserviceConfig == null || listAllWebserviceConfig.isEmpty()) {
             logger.warn("Load webserviceConfig fail!");
-            return null;
+            return mapAllWsConfig;
         }
         for(WebserviceConfig webserviceConfig : listAllWebserviceConfig){
             mapAllWsConfig.put(webserviceConfig.getId(), webserviceConfig);
@@ -126,7 +126,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         Map<String, String> mapAllConfig = new HashMap<>();
         if(listAllConfiguration == null || listAllConfiguration.isEmpty()){
             logger.warn("Load configuration fail!");
-            return null;
+            return mapAllConfig;
         }
         for(Configuration configuration : listAllConfiguration){
             mapAllConfig.put(configuration.getKey(), configuration.getContent());
