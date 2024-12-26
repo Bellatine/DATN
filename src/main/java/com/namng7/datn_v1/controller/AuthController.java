@@ -57,8 +57,7 @@ public class AuthController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateInfo(@RequestBody User user){
-        ProcessRecord updateRecord = new ProcessRecord(user);
+    public ResponseEntity<?> updateInfo(@RequestBody ProcessRecord updateRecord){
         try {
             userServiceImpl.updateInfor(updateRecord);
             return ResponseEntity.ok(updateRecord);

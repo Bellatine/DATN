@@ -87,13 +87,21 @@ public class CompanyController {
     }
 
     @PostMapping("/updateCompany")
-    public ResponseEntity<?> updateCompany(@RequestBody Company company){
-        ProcessRecord record = new ProcessRecord();
+    public ResponseEntity<?> updateCompany(@RequestBody ProcessRecord record){
         try{
-            record.setObject(company);
             companyService.updateCompany(record);
             return ResponseEntity.ok(record);
         } catch (Exception e) {
+            return ResponseEntity.badRequest().body(record);
+        }
+    }
+
+    @PostMapping("/getCompanyByRole")
+    public ResponseEntity<?> getCompanyByRole(@RequestBody ProcessRecord record){
+        companyService.getAllCompanybyRole(record);
+        if(record.getErrorCode() == Key.ErrorCode.SUCCESS){
+            return ResponseEntity.ok(record);
+        } else {
             return ResponseEntity.badRequest().body(record);
         }
     }

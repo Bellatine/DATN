@@ -1,5 +1,6 @@
 package com.namng7.datn_v1.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.namng7.datn_v1.cache.CacheManager;
 import com.namng7.datn_v1.cache.Key;
 import com.namng7.datn_v1.model.User;
@@ -9,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 public class UserUtil {
     public static int SUCCESS = 0;
@@ -46,6 +48,11 @@ public class UserUtil {
         CacheManager.Users.MapUserByUsername.put(savedUser.getUsername(), savedUser);
         CacheManager.Users.MapUserByUserID.put(savedUser.getId(), savedUser);
         return savedUser;
+    }
+
+    public static User convertMaptoPojo(LinkedHashMap<String, Object> map) throws Exception{
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.convertValue(map, User.class);
     }
 
 }
